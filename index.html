@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lee</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="shortcut icon" href="./image/favicon.ico"/>
+    <script src="./js/jquery.js"></script>
+</head>
+<body style="margin: 0;padding: 0; position: relative;">
+    <div class="bodybox">
+        <div class="box"></div>
+        <div class="box1"></div>
+        <img src="" alt="" id = "bgbox">
+        <div class="title" id = "titie">
+            <h1 id = "titleText" onclick="timeis()"></h1>
+        </div>
+        <input type="text" id = "search" placeholder="Search">
+        <div class="searchOptBox">
+            <input type="button"  class="selected" id = "google" value="">
+            <input type="button" id = "bing" value="">
+            <input type="button" id = "baidu" value="">
+        </div>
+        <footer>
+            <span>
+                © 2020 Lee
+            </span>
+        </footer>
+    </div>
+    <script>
+        function setImageSrc(){
+            var imgSrc = new Array("http://h2.ioliu.cn/bing/GoldenGinkgo_ZH-CN8507013452_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/ValCervara_ZH-CN1889046979_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/MontBlancPeak_ZH-CN0459151326_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/MontBlancPeak_ZH-CN0459151326_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/LakotaBadlands_ZH-CN0151830089_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/CityofGuanajuato_ZH-CN7559565626_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/TorontoSky_ZH-CN6932705886_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/GrandCanalGondolas_ZH-CN0542933448_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/HallstattAustria_PT-BR9407016733_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/Aoraki_ZH-CN7776353328_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/SpainSurfer_EN-AU11271138486_1920x1080.jpg?imageslim",
+                        "http://h2.ioliu.cn/bing/LenticularVideo_ZH-CN2275732856_1920x1080.jpg?imageslim"
+            );
+            var image = $("img")[0];
+            
+            image.src = imgSrc[Math.floor(Math.random()*imgSrc.length)];
+        }
+        function formatDate(date) {
+            var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var min = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            var myDate = hour + ":" + min;
+            return myDate;
+        }
+        
+        function time(){
+            var date = new Date();
+            date = formatDate(date);
+            $("#titleText").text(date);
+        }
+        var id = setInterval(time, 1000);
+        $(function(){
+            //页面加载的完成的时候隐藏box
+            $(document).bind("contextmenu",function(e){
+                //禁止鼠标右键事件
+                return false;
+            });
+            window.onkeydown = window.onkeyup = window.onkeypress = function () { 
+                window.event.returnValue = false; 
+                //禁止f12  等其他调出控制台
+                return false; 
+            }
+            search.val(""); //输入框清空内容
+            $(".box").hide();   //设置毛玻璃特效隐藏
+            $(".searchOptBox").hide();  //设置搜索引擎隐藏
+            setImageSrc(); //设置图片
+        });
+        function timeis(){
+            location.href = "https://time.is/zh/";
+        }
+        function setBlur(){
+            //失去焦点后
+            $("#search").css({
+                    "color": "rgba(225, 225, 225, 0.8)",
+                    "background-color": "rgba(255,255,255,.25)",
+                    "box-shadow": "rgba(0, 0, 0, 0.2) 0 0 10px",
+                    "left": "calc(50% - 115px)",
+                    "width": "200px"
+            });
+        }
+        var search = $("#search");
+        var inputs = $(".searchOptBox").children("input");
+        $("#search").focus(function(){
+            //获取焦点事件
+            $(".box").show(100);
+            $(".searchOptBox").show(100);
+            $("#bgbox").css({
+                "transition":"all 0.5s",
+                "transform":"scale(1.1)"
+            });
+            $("#search").css({
+                "color": "gray",
+               " background-color":" rgba(255,255,255,.6)",
+               " box-shadow": "rgba(0, 0, 0, 0.3) 0 0 10px",
+               " left": "calc(50% - 265px)",
+               " width": "500px",
+                "background-color":"white"
+            });
+        });
+        $("#search").blur(function(){
+            //失去焦点事件
+            for(var i = 0; i < inputs.length;i++){
+                search.val("");
+                $(".box").hide(100);
+                $(".searchOptBox").hide(100);
+                $("#bgbox").css({
+                    "transition":"all 0.5s",
+                    "transform":"scale(1)"
+                });
+                setBlur();
+                
+            }
+        });
+        $("#search").hover(function(){
+            //鼠标划进去
+            if(search.is(":focus") == false){
+                $("#search").css({
+                "color": "gray",
+                "background-color": "rgba(255,255,255,.6)",
+                "box-shadow": "rgba(0, 0, 0, 0.3) 0 0 10px",
+                "left": "calc(50% - 265px)",
+                "width": "500px"
+                });
+            }
+        },function(){
+            //移出鼠标,判断文本框是否有内容
+            if(search.val() == "" && search.is(":focus") == false){
+                setBlur();
+            }
+            
+        });
+        $(".searchOptBox").on('click','input',function(){
+            //给每一个span添加单击属性            
+            if(inputs.hasClass("selected")){
+                inputs.removeClass("selected");
+            }
+            $(this).addClass("selected");
+
+        });
+        $(".searchOptBox").on('mousedown','input',function(e){
+            //点击按钮让input不失去焦点
+            if ( e && e.preventDefault ) 
+	            e.preventDefault(); 
+	        //IE阻止默认事件
+	        else 
+	            window.event.returnValue = false;
+        });
+        
+        search.keyup(function(event){
+            //监听回车事件
+            if(event.keyCode ==13){
+                var val = search.val();
+                var id = $(".selected").attr("id");
+                if(val != ""){
+                    switch(id){
+                        case "google":
+                            //使用Google搜索引擎
+                            location.href = "https://www.google.com/search?q=" + val;
+                            break;
+                        case "bing":
+                            location.href = "https://cn.bing.com/search?q=" + val;
+                            break;
+                        case "baidu":
+                            location.href = "http://www.baidu.com/s?wd=" + val +"&cl=3";
+                            break;
+                    }
+                }
+            }
+            
+        });
+        function cls(){
+            search.val("")
+        }
+    </script>
+</body>
+</html>
